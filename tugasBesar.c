@@ -571,35 +571,58 @@ void searchShoes(){
     fclose(f_daftarSepatu);
 }
 
-void userReg(){
+void userReg() {
     system("cls");
     printf("== Registrasi Customer ==\n");
     FILE *f_daftarakun;
     f_daftarakun = fopen("akuncus.dat", "ab");
-    
+
     if (f_daftarakun == NULL) {
         perror("Error Membuka File");
         return;
     } else {
         memset(&data, 0, sizeof(data));
+
+        // Input username
         printf("Username baru : ");
-        fgets(data.userNameCus, sizeof(data.userNameCus), stdin);
+        scanf("%s", data.userNameCus);
+
+        // Input password
         printf("\nPassword baru : ");
-        fgets(data.passwordCus, sizeof(data.passwordCus), stdin);
-        fwrite(&data, sizeof(data), 1, f_daftarakun);
+        scanf("%s", data.passwordCus);
+
+        // Menampilkan data yang akan disimpan
+        printf("\nData yang akan disimpan:\n");
+        printf("Username: %s\n", data.userNameCus);
+        printf("Password: %s\n", data.passwordCus);
+
+        // Opsi perbaiki data
+        printf("\nApakah data sudah benar? (Y/N): ");
+        char confirmation;
+        scanf(" %c", &confirmation);
+
+        if (confirmation == 'Y' || confirmation == 'y') {
+            fwrite(&data, sizeof(data), 1, f_daftarakun);
+            fclose(f_daftarakun);
+
+            system("cls");
+            printf("Berhasil Membuat Akun!!\n");
+            printf("Tekan Enter untuk melanjutkan...\n");
+            while (getchar() != '\n');
+            getchar();
+
+            userLogin();
+        } else {
+            fclose(f_daftarakun);
+            printf("Registrasi dibatalkan.\n");
+            printf("Tekan Enter untuk melanjutkan...\n");
+            while (getchar() != '\n');
+            main();
+        }
     }
-    fclose(f_daftarakun);
-
-    system("cls");
-    printf("Berhasil Membuat Akun!!\n");
-    printf("Tekan Enter untuk melanjutkan...\n");
-    while (getchar() != '\n');  
-    getchar();
-
-    userLogin();
 }
 
-void userLogin(){
+void userLogin() {
     int attempts = 3;
     int success = 0;
 
@@ -610,9 +633,10 @@ void userLogin(){
         printf("----------------------\n");
 
         printf("\nMasukkan Username : ");
-        fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
+        scanf("%s", data.targetUsername);
+
         printf("\nMasukkan Password : ");
-        fgets(data.targetPassword, sizeof(data.targetPassword), stdin);
+        scanf("%s", data.targetPassword);
 
         FILE *f_daftarakun;
         f_daftarakun = fopen("akuncus.dat", "rb");
@@ -622,12 +646,17 @@ void userLogin(){
             return;
         }
 
-        while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
-            if (strcmp(data.targetUsername, data.userNameCus) == 0 && strcmp(data.targetPassword, data.passwordCus) == 0) {
+        // Use a separate structure to read data from the file
+        struct shoesandcare userData;
+
+        while (fread(&userData, sizeof(userData), 1, f_daftarakun) == 1) {
+            // Check for a match using the entered username and password
+            if (strcmp(data.targetUsername, userData.userNameCus) == 0 &&
+                strcmp(data.targetPassword, userData.passwordCus) == 0) {
                 printf("Login berhasil!!\n");
                 success = 1;
                 printf("Tekan Enter untuk melanjutkan...\n");
-                while (getchar() != '\n');  
+                while (getchar() != '\n');
                 getchar();
                 menuCustomer();
                 break;
@@ -640,7 +669,7 @@ void userLogin(){
             attempts--;
             printf("Username atau Password Salah, sisa kesempatan login: %d\n", attempts);
             printf("Tekan Enter untuk melanjutkan...\n");
-            while (getchar() != '\n');  
+            while (getchar() != '\n');
             getchar();
         }
     }
@@ -648,8 +677,7 @@ void userLogin(){
     if (attempts == 0) {
         printf("Kesempatan login habis.\n");
         printf("Tekan Enter untuk melanjutkan...\n");
-        while (getchar() != '\n');  
-        getchar();
+        while (getchar() != '\n');
         main();
     }
 }
