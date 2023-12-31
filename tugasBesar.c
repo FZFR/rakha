@@ -312,18 +312,17 @@ void addStok() {
     while (getchar() != '\n');  // Clear input buffer
 
     if (data.kategori == 1) {
-        printf("Masukkan Jenis Sepatu (Sneaker/Boots): ");
-        fgets(data.jenis, sizeof(data.jenis), stdin);
+        printf("Masukkan Jenis Sepatu (1 Sneaker, 2. Boots): ");
+        scanf(" %d", &data.jenis);
     } else if (data.kategori == 2) {
-        printf("Masukkan Jenis Sepatu (Flat Shoes/High Heel/Sandal): ");
-        fgets(data.jenis, sizeof(data.jenis), stdin);
+        printf("Masukkan Jenis Sepatu (1. Flat Shoes, 2. High Heel, 3. Sandal): ");
+        scanf(" %d", &data.jenis);
     } else {
         printf("Kategori tidak valid.\n");
         fclose(f_daftarSepatu);
         return;
     }
-
-    fgets(data.jenis, sizeof(data.jenis), stdin);
+    
     while (getchar() != '\n');  // Clear input buffer
 
     printf("Masukkan Harga Sepatu: ");
@@ -525,13 +524,13 @@ void viewShoes() {
     printf("===== Daftar Sepatu =====\n");
 
     while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
-        printf("ID Sepatu: %d\n", data.sepatuId);
-        printf("Nama: %s\n", data.nama);
-        printf("Kategori: %d\n", data.kategori);  // Use %d for integer
-        printf("Jenis: %s\n", data.jenis);
-        printf("Harga: %.2f\n", data.harga);
-        printf("Stok: %d\n", data.stok);
-        printf("\n");
+    printf("ID Sepatu: %d\n", data.sepatuId);
+    printf("Nama: %s\n", data.nama);
+    printf("Kategori: %d\n", data.kategori);  // Use %d for integer
+    printf("Jenis: %d\n", data.jenis);
+    printf("Harga: %.2f\n", data.harga);
+    printf("Stok: %d\n", data.stok);
+    printf("\n");
     }
 
     fclose(f_daftarSepatu);
@@ -578,8 +577,8 @@ void searchShoes(){
             if (strcmp(data.kategori, keyword) == 0) {
                 printf("ID Sepatu: %d\n", data.sepatuId);
                 printf("Nama: %s\n", data.nama);
-                printf("Kategori: %s\n", data.kategori);
-                printf("Jenis: %s\n", data.jenis);
+                printf("Kategori: %d\n", data.kategori);
+                printf("Jenis: %d\n", data.jenis);
                 printf("Harga: %.2f\n", data.harga);
                 printf("Stok: %d\n", data.stok);
                 printf("\n");
@@ -588,8 +587,8 @@ void searchShoes(){
             if (strcmp(data.jenis, keyword) == 0) {
                 printf("ID Sepatu: %d\n", data.sepatuId);
                 printf("Nama: %s\n", data.nama);
-                printf("Kategori: %s\n", data.kategori);
-                printf("Jenis: %s\n", data.jenis);
+                printf("Kategori: %d\n", data.kategori);
+                printf("Jenis: %d\n", data.jenis);
                 printf("Harga: %.2f\n", data.harga);
                 printf("Stok: %d\n", data.stok);
                 printf("\n");
@@ -771,7 +770,7 @@ void checkOut(){
     printf("Ringkasan Pesanan:\n");
     printf("ID Sepatu: %d\n", data.sepatuId);
     printf("Kategori: %s\n", data.kategori);
-    printf("Jenis: %s\n", data.jenis);
+    printf("Jenis: %d\n", data.jenis);
     printf("Harga: %.2f\n", data.harga);
 
     float totalHarga = data.harga * data.stok;
@@ -784,7 +783,7 @@ void checkOut(){
     printf("===== Bukti Transaksi =====\n");
     printf("ID Sepatu: %d\n", data.sepatuId);
     printf("Kategori: %s\n", data.kategori);
-    printf("Jenis: %s\n", data.jenis);
+    printf("Jenis: %d\n", data.jenis);
     printf("Harga: %.2f\n", data.harga);
     printf("Jumlah: %d\n", data.stok);
     printf("Total Harga: %.2f\n", totalHarga);
@@ -825,7 +824,7 @@ void ubahPassUser(){
     fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
     {
-        if (strcmp(data.userNameCus, data.feedback) == 0)
+        if (strcmp(data.userNameCus, data.targetUsername) == 0)
         {
             printf("Masukkan password baru: ");
             fgets(data.passwordCus, sizeof(data.passwordCus), stdin);
