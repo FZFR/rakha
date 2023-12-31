@@ -294,7 +294,7 @@ void ubahPasswordCust(){
     adminOptions();  
 }
 
-void addStok(){
+void addStok() {
     FILE *f_daftarSepatu;
     f_daftarSepatu = fopen("daftar_sepatu.dat", "ab");
 
@@ -305,13 +305,15 @@ void addStok(){
 
     printf("Masukkan ID Sepatu: ");
     scanf(" %d", &data.sepatuId);
-    getchar(); 
-    printf("Masukkan Kategori (Male/Female): ");
+    while (getchar() != '\n');  // Clear input buffer
+
+    printf("Masukkan Kategori (1 for Male, 2 for Female): ");
     scanf(" %d", &data.kategori);
-    
-    if (strcmp(data.kategori, "Male") == 0) {
+    while (getchar() != '\n');  // Clear input buffer
+
+    if (data.kategori == 1) {
         printf("Masukkan Jenis Sepatu (Sneaker Boots): ");
-    } else if (strcmp(data.kategori, "Female") == 0) {
+    } else if (data.kategori == 2) {
         printf("Masukkan Jenis Sepatu (Flat Shoes/High Heel/Sandal): ");
     } else {
         printf("Kategori tidak valid.\n");
@@ -320,10 +322,15 @@ void addStok(){
     }
 
     fgets(data.jenis, sizeof(data.jenis), stdin);
+    while (getchar() != '\n');  // Clear input buffer
+
     printf("Masukkan Harga Sepatu: ");
     scanf("%f", &data.harga);
+    while (getchar() != '\n');  // Clear input buffer
+
     printf("Masukkan Stok Sepatu: ");
     scanf(" %d", &data.stok);
+    while (getchar() != '\n');  // Clear input buffer
 
     fwrite(&data, sizeof(data), 1, f_daftarSepatu);
     fclose(f_daftarSepatu);
@@ -447,6 +454,7 @@ void viewUcust() {
 
     int found = 0;
 
+    // Move the search loop outside the loop where you read and print the list of usernames
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
         if (strcmp(data.userNameCus, data.targetUsername) == 0) {
             printf("===== Akun Customer =====\n");
@@ -458,11 +466,12 @@ void viewUcust() {
         }
     }
 
+    fclose(f_daftarakun);
+
     if (!found) {
         printf("Maaf, akun customer dengan username %s tidak ditemukan.\n", data.targetUsername);
     }
 
-    fclose(f_daftarakun);
     printf("Tekan Enter untuk kembali ke menu admin...\n");
     while (getchar() != '\n');
     adminOptions();
