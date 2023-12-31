@@ -352,24 +352,39 @@ void viewFeedBack() {
     }
 }
 
-void viewUcust(){
-
+void viewUcust() {
     FILE *f_daftarakun;
-    
+
     f_daftarakun = fopen("akuncus.dat", "rb");
 
-    if (f_daftarakun == NULL)
-    {
+    if (f_daftarakun == NULL) {
+        perror("Error Membuka File");
+        return;
+    }
+
+    printf("===== List Akun Customer =====\n");
+
+    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
+        printf("%s\n", data.userNameCus);
+    }
+
+    fclose(f_daftarakun);
+
+    printf("Masukkan username customer yang ingin dilihat: ");
+    getchar(); 
+    fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
+
+    f_daftarakun = fopen("akuncus.dat", "rb");
+
+    if (f_daftarakun == NULL) {
         perror("Error Membuka File");
         return;
     }
 
     int found = 0;
 
-    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
-    {
-        if (strcmp(data.userNameCus, data.targetUsername) == 0)
-        {
+    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
+        if (strcmp(data.userNameCus, data.targetUsername) == 0) {
             printf("===== Akun Customer =====\n");
             printf("Username: %s\n", data.userNameCus);
             printf("Password: %s\n", data.passwordCus);
@@ -379,13 +394,12 @@ void viewUcust(){
         }
     }
 
-    if (!found)
-    {
+    if (!found) {
         printf("Maaf, akun customer dengan username %s tidak ditemukan.\n", data.targetUsername);
     }
 
     fclose(f_daftarakun);
-    printf("Tekan Enter untuk melanjutkan...\n");
+    printf("Tekan Enter untuk kembali ke menu admin...\n");
     while (getchar() != '\n');
     adminOptions();
 }
