@@ -192,19 +192,15 @@ void hapusAkun() {
 
     printf("===== List Akun Customer =====\n");
 
-    // Display the list of customer usernames
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
         printf("%s\n", data.userNameCus);
     }
 
     fclose(f_daftarakun);
-
-    // Prompt for the username of the customer to be deleted
+    
     printf("Masukkan username customer yang ingin dihapus: ");
-    getchar();
     fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
 
-    // Open the file again to check for the selected customer and ask for confirmation
     f_daftarakun = fopen("akuncus.dat", "rb");
 
     if (f_daftarakun == NULL) {
@@ -454,10 +450,11 @@ void viewUcust() {
     }
 
     int found = 0;
-
-    // Move the search loop outside the loop where you read and print the list of usernames
-    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
-        if (strcmp(data.userNameCus, data.targetUsername) == 0) {
+    
+    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
+    {
+        if (strcmp(data.userNameCus, data.targetUsername) == 0)
+        {
             printf("===== Akun Customer =====\n");
             printf("Username: %s\n", data.userNameCus);
             printf("Password: %s\n", data.passwordCus);
@@ -477,6 +474,7 @@ void viewUcust() {
     while (getchar() != '\n');
     adminOptions();
 }
+
 
 void user(){
     system("cls");
@@ -699,6 +697,7 @@ void userLogin() {
 
         printf("\nMasukkan Password : ");
         scanf("%s", data.targetPassword);
+        getchar();
 
         FILE *f_daftarakun;
         f_daftarakun = fopen("akuncus.dat", "rb");
@@ -813,6 +812,7 @@ void checkOut(){
     char metodePembayaran[50];
     printf("Masukkan metode pembayaran (Contoh: Kartu Kredit): ");
     scanf("%s", metodePembayaran);
+    getchar();
 
     printf("===== Bukti Transaksi =====\n");
     printf("ID Sepatu: %d\n", data.sepatuId);
@@ -856,6 +856,7 @@ void ubahPassUser(){
 
     printf("\nMasukkan username customer: ");
     fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
+    getchar();
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
     {
         if (strcmp(data.userNameCus, data.targetUsername) == 0)
