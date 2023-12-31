@@ -40,7 +40,7 @@ int main(){
     printf("2. User.\n");
     printf("3. Keluar dari program.\n");
     printf("Pilihan : ");
-    scanf("%d", &pilihan);
+    scanf(" %d", &pilihan);
 
     switch (pilihan)
     {
@@ -82,8 +82,8 @@ void admin(){
         if (strcmp(adminUsername, "admin") == 0 && strcmp(adminPassword, "admin") == 0)
         {
             printf("Login sukses.\n");
-            printf("Enter angka apa saja untuk melanjutkan.\n");
-            scanf("%d", &adminOpts);
+            printf("Tekan Enter untuk melanjutkan...\n");
+            while (getchar() != '\n');            
 
             adminOptions();
         }
@@ -101,8 +101,7 @@ void admin(){
 
         printf("Anda telah gagal log in sebanyak 3 kali.\n");
         printf("Enter 1 agar anda diredirect ke halaman utama.\n");
-        scanf("%d", &returnAdm);
-
+        scanf(" %d", &returnAdm);        
         switch (returnAdm)
         {
         case 1:
@@ -130,7 +129,7 @@ void adminOptions(){
     printf("7. Menu Sebelumnya.\n");
     printf("8. Log Out.\n");
     printf("Pilihan : ");
-    scanf("%d", &pilihan);
+    scanf(" %d", &pilihan);
 
     switch (pilihan){
 
@@ -194,7 +193,7 @@ void hapusAkun(){
 
     printf("Masukkan username customer yang ingin dihapus: ");
     getchar(); 
-    gets(data.targetUsername);
+    fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
 
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
         if (strcmp(data.userNameCus, data.targetUsername) != 0) {
@@ -209,7 +208,8 @@ void hapusAkun(){
     rename("temp.dat", "akuncus.dat");
 
     printf("Akun customer dengan username %s telah dihapus.\n", data.targetUsername);
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();
 }
 
@@ -226,20 +226,22 @@ void ubahPasswordCust(){
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
         if (strcmp(data.userNameCus, data.targetUsername) == 0) {
             printf("Masukkan password baru: ");
-            gets(data.passwordCus);
+            fgets(data.passwordCus, sizeof(data.passwordCus), stdin);
             fseek(f_daftarakun, -sizeof(data), SEEK_CUR);
             fwrite(&data, sizeof(data), 1, f_daftarakun);
             printf("Berhasil mengganti password!\n");
             fclose(f_daftarakun);
-            system("pause");
+            printf("Tekan Enter untuk melanjutkan...\n");
+            while (getchar() != '\n');
             adminOptions();  
             return;
         }
     }
 
     printf("Username tidak ditemukan.\n");
-    fclose(f_daftarakun);
-    system("pause");
+    fclose(f_daftarakun);    
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();  
 }
 
@@ -253,10 +255,10 @@ void addStok(){
     }
 
     printf("Masukkan ID Sepatu: ");
-    scanf("%d", &data.sepatuId);
+    scanf(" %d", &data.sepatuId);
     getchar(); 
     printf("Masukkan Kategori (Male/Female): ");
-    gets(data.kategori);
+    scanf(" %d", &data.kategori);
     
     if (strcmp(data.kategori, "Male") == 0) {
         printf("Masukkan Jenis Sepatu (Sneaker Boots): ");
@@ -268,17 +270,18 @@ void addStok(){
         return;
     }
 
-    gets(data.jenis);
+    fgets(data.jenis, sizeof(data.jenis), stdin);
     printf("Masukkan Harga Sepatu: ");
     scanf("%f", &data.harga);
     printf("Masukkan Stok Sepatu: ");
-    scanf("%d", &data.stok);
+    scanf(" %d", &data.stok);
 
     fwrite(&data, sizeof(data), 1, f_daftarSepatu);
     fclose(f_daftarSepatu);
 
     printf("Data sepatu berhasil ditambahkan.\n");
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();
 }
 void viewOrder(){
@@ -306,30 +309,47 @@ void viewOrder(){
     }
 
     fclose(f_order);
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();
 }
 
-void viewFeedBack(){
+void viewFeedBack() {
     FILE *f_feedback;
     f_feedback = fopen("feedback.dat", "rb");
 
-    if (f_feedback == NULL)
-    {
+    if (f_feedback == NULL) {
         printf("Error: Gagal membuka file feedback.dat\n");
         return;
     }
 
     printf("===== Daftar Feedback =====\n");
 
-    while (fread(&data, sizeof(data), 1, f_feedback) == 1)
-    {
-        printf("%s\n", data.feedback);
+    while (fread(&data, sizeof(data), 1, f_feedback) == 1) {
+        printf("Feedback: %s\n", data.feedback);
     }
 
     fclose(f_feedback);
-    system("pause");
-    adminOptions();
+
+    printf("\n1. Kembali ke Menu Admin\n");
+    printf("2. Kembali ke Menu Utama / Log out \n");
+    printf("Pilihan: ");
+
+    int choice;
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            adminOptions();
+            break;
+        case 2:
+            main();
+            break;
+        default:
+            printf("Pilihan tidak valid. Kembali ke Menu Admin.\n");
+            adminOptions();
+            break;
+    }
 }
 
 void viewUcust(){
@@ -365,7 +385,8 @@ void viewUcust(){
     }
 
     fclose(f_daftarakun);
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();
 }
 
@@ -380,7 +401,7 @@ void user(){
     printf("2. Login.\n");
     printf("3. Keluar dari program.\n");
     printf("Pilihan : ");
-    scanf("%d", &pilihan);
+    scanf(" %d", &pilihan);
 
     switch (pilihan)
     {
@@ -427,7 +448,8 @@ void viewShoes(){
     }
 
     fclose(f_daftarSepatu);
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     adminOptions();
 }
 
@@ -480,57 +502,55 @@ void userReg(){
     if (f_daftarakun == NULL) {
         perror("Error Membuka File");
         return;
-    }else{
-
-    printf("Username baru : ");
-    gets(data.userNameCus);
-    printf("\nPassword baru : ");
-    gets(data.passwordCus);
-    fwrite(&data, sizeof(data), 1, f_daftarakun)==1;
+    } else {
+        memset(&data, 0, sizeof(data));
+        printf("Username baru : ");
+        fgets(data.userNameCus, sizeof(data.userNameCus), stdin);
+        printf("\nPassword baru : ");
+        fgets(data.passwordCus, sizeof(data.passwordCus), stdin);
+        fwrite(&data, sizeof(data), 1, f_daftarakun);
     }
     fclose(f_daftarakun);
 
     system("cls");
     printf("Berhasil Membuat Akun!!\n");
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    fflush(stdin);
+    getchar();
 
-   
-    userLogin(3); 
+    userLogin();
 }
 
 void userLogin(){
     int attempts = 3;
     int success = 0;
-    
 
-    while (attempts > 0 && success == 0)
-    {
+    while (attempts > 0 && success == 0) {
         system("cls");
         printf("----------------------\n");
         printf("\tLOGIN\n");
         printf("----------------------\n");
 
         printf("\nMasukkan Username : ");
-        gets(data.targetUsername);
+        fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
         printf("\nMasukkan Password : ");
-        gets(data.targetPassword);
+        fgets(data.targetPassword, sizeof(data.targetPassword), stdin);
 
         FILE *f_daftarakun;
         f_daftarakun = fopen("akuncus.dat", "rb");
 
-        if (f_daftarakun == NULL)
-        {
+        if (f_daftarakun == NULL) {
             perror("Error Membuka File");
             return;
         }
 
-        while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
-        {
-            if (strcmp(data.targetUsername, data.userNameCus) == 0 && strcmp(data.targetPassword, data.passwordCus) == 0)
-            {
+        while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
+            if (strcmp(data.targetUsername, data.userNameCus) == 0 && strcmp(data.targetPassword, data.passwordCus) == 0) {
                 printf("Login berhasil!!\n");
                 success = 1;
-                system("pause");
+                printf("Tekan Enter untuk melanjutkan...\n");
+                fflush(stdin);
+                getchar();
                 menuCustomer();
                 break;
             }
@@ -538,18 +558,20 @@ void userLogin(){
 
         fclose(f_daftarakun);
 
-        if (success != 1)
-        {
+        if (success != 1) {
             attempts--;
             printf("Username atau Password Salah, sisa kesempatan login: %d\n", attempts);
-            system("pause");
+            printf("Tekan Enter untuk melanjutkan...\n");
+            fflush(stdin);
+            getchar();
         }
     }
 
-    if (attempts == 0)
-    {
+    if (attempts == 0) {
         printf("Kesempatan login habis.\n");
-        system("pause");
+        printf("Tekan Enter untuk melanjutkan...\n");
+        fflush(stdin);
+        getchar();
         main();
     }
 }
@@ -566,7 +588,7 @@ void menuCustomer(){
     printf("5.Feed Back\n");
     printf("6.Kembali\n");
     printf("7.Selesai");
-    scanf("%d",&pilihan);
+    printf("\nMasukkan Pilihan Anda : "); scanf( "%d", &pilihan);    
     
     switch(pilihan){
         case 1:
@@ -600,7 +622,8 @@ void menuCustomer(){
         break;
         default:
         printf("Data yang anda masukan tidak valid");
-        system("pause");
+        printf("Tekan Enter untuk melanjutkan...\n");
+        while (getchar() != '\n');
         menuCustomer();
         break;
     }
@@ -648,7 +671,8 @@ void checkOut(){
     memset(&data, 0, sizeof(data));
 
     printf("Transaksi selesai.\n");
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     menuCustomer();
 }
 
@@ -664,25 +688,27 @@ void ubahPassUser(){
     }
 
     printf("\nMasukkan username customer: ");
-    gets(data.targetUsername);
+    fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1)
     {
         if (strcmp(data.userNameCus, data.feedback) == 0)
         {
             printf("Masukkan password baru: ");
-            gets(data.passwordCus);
+            fgets(data.passwordCus, sizeof(data.passwordCus), stdin);
             fseek(f_daftarakun, -sizeof(data), SEEK_CUR);
             fwrite(&data, sizeof(data), 1, f_daftarakun);
             printf("Berhasil mengganti password!\n");
             fclose(f_daftarakun);
-            system("pause");
+            printf("Tekan Enter untuk melanjutkan...\n");
+            while (getchar() != '\n');
             menuCustomer();
         }
     }
     printf("Username tidak ditemukan.\n");
 
     fclose(f_daftarakun);
-    system("pause");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     menuCustomer();
 }
 
@@ -696,20 +722,20 @@ void addFeedback(){
         return;
     }
 
-    printf("Masukkan Feedback Anda (maksimum 100 karakter):\n");
+    printf("Masukkan Feedback Anda (maksimum 100 karakter): ");
     getchar();
     fgets(data.feedback, sizeof(data.feedback), stdin);
 
     fwrite(&data, sizeof(data), 1, f_feedback);
     fclose(f_feedback);
 
-    printf("Feedback Anda telah disimpan. Terima kasih!\n");
-    system("pause");
+    printf("Feedback Anda telah disimpan. Terima kasih!");
+    printf("Tekan Enter untuk melanjutkan...\n");
+    while (getchar() != '\n');
     menuCustomer();
 }
 
 
 void outro(){
-    printf("Terima kasih telah menggunakan aplikasi kami");
-    return 0;
+    printf("Terima kasih telah menggunakan aplikasi kami");    
 }
