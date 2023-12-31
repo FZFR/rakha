@@ -333,20 +333,18 @@ void addStok(){
     while (getchar() != '\n');
     adminOptions();
 }
-void viewOrder(){
+void viewOrder() {
     FILE *f_order;
     f_order = fopen("orderan.dat", "rb");
 
-    if (f_order == NULL)
-    {
+    if (f_order == NULL) {
         printf("Error: Gagal membuka file orderan.dat\n");
         return;
     }
 
     printf("===== Daftar Orderan =====\n");
 
-    while (fread(&data, sizeof(data), 1, f_order) == 1)
-    {
+    while (fread(&data, sizeof(data), 1, f_order) == 1) {
         printf("ID Sepatu: %d\n", data.sepatuId);
         printf("Kategori: %s\n", data.kategori);
         printf("Jenis: %s\n", data.jenis);
@@ -358,9 +356,26 @@ void viewOrder(){
     }
 
     fclose(f_order);
-    printf("Tekan Enter untuk melanjutkan...\n");
-    while (getchar() != '\n');
-    adminOptions();
+
+    printf("1. Kembali ke Menu Admin\n");
+    printf("2. Kembali ke Menu Utama / Log out \n");
+    printf("Pilihan: ");
+
+    int choice;
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            adminOptions();
+            break;
+        case 2:
+            main();
+            break;
+        default:
+            printf("Pilihan tidak valid. Kembali ke Menu Admin.\n");
+            adminOptions();
+            break;
+    }
 }
 
 void viewFeedBack() {
