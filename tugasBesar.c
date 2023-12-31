@@ -354,7 +354,7 @@ void viewOrder() {
 
     while (fread(&data, sizeof(data), 1, f_order) == 1) {
         printf("ID Sepatu: %d\n", data.sepatuId);
-        printf("Kategori: %s\n", data.kategori);
+        printf("Kategori: %d\n", data.kategori);
         printf("Jenis: %s\n", data.jenis);
         printf("Harga: %.2f\n", data.harga);
         printf("Jumlah: %d\n", data.stok);
@@ -559,10 +559,11 @@ void viewShoes() {
     }
 }
 
-void searchShoes(){
-    
+void searchShoes() {
     FILE *f_daftarSepatu;
-    char keyword[50],field[50];
+    char field[50];
+    int keyword;
+    
     f_daftarSepatu = fopen("daftar_sepatu.dat", "rb");
 
     if (f_daftarSepatu == NULL) {
@@ -570,29 +571,47 @@ void searchShoes(){
         return;
     }
 
+    printf("Cari berdasarkan (1. kategori, 2. Jenis): ");
+    scanf("%s", field);
+
+    if (strcmp(field, "1") == 0) {
+        printf("1. Male\n");
+        printf("2. Female\n");
+        printf("Pilih kategori: ");
+        scanf("%d", &keyword);
+    } else if (strcmp(field, "2") == 0) {
+        printf("1. Sneakers\n");
+        printf("2. Boots\n");
+        printf("3. Flat Shoes\n");
+        printf("4. High Heel\n");
+        printf("5. Sandal\n");
+        printf("Pilih jenis: ");
+        scanf("%d", &keyword);
+    } else {
+        printf("Input tidak valid.\n");
+        fclose(f_daftarSepatu);
+        return;
+    }
+
     printf("===== Hasil Pencarian =====\n");
 
     while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
-        if (strcmp(field, "kategori") == 0) {
-            if (strcmp(data.kategori, keyword) == 0) {
-                printf("ID Sepatu: %d\n", data.sepatuId);
-                printf("Nama: %s\n", data.nama);
-                printf("Kategori: %d\n", data.kategori);
-                printf("Jenis: %d\n", data.jenis);
-                printf("Harga: %.2f\n", data.harga);
-                printf("Stok: %d\n", data.stok);
-                printf("\n");
-            }
-        } else if (strcmp(field, "jenis") == 0) {
-            if (strcmp(data.jenis, keyword) == 0) {
-                printf("ID Sepatu: %d\n", data.sepatuId);
-                printf("Nama: %s\n", data.nama);
-                printf("Kategori: %d\n", data.kategori);
-                printf("Jenis: %d\n", data.jenis);
-                printf("Harga: %.2f\n", data.harga);
-                printf("Stok: %d\n", data.stok);
-                printf("\n");
-            }
+        if (strcmp(field, "1") == 0 && data.kategori == keyword) {
+            printf("ID Sepatu: %d\n", data.sepatuId);
+            printf("Nama: %s\n", data.nama);
+            printf("Kategori: %d\n", data.kategori);
+            printf("Jenis: %d\n", data.jenis);
+            printf("Harga: %.2f\n", data.harga);
+            printf("Stok: %d\n", data.stok);
+            printf("\n");
+        } else if (strcmp(field, "2") == 0 && data.jenis == keyword) {
+            printf("ID Sepatu: %d\n", data.sepatuId);
+            printf("Nama: %s\n", data.nama);
+            printf("Kategori: %d\n", data.kategori);
+            printf("Jenis: %d\n", data.jenis);
+            printf("Harga: %.2f\n", data.harga);
+            printf("Stok: %d\n", data.stok);
+            printf("\n");
         }
     }
 
@@ -769,7 +788,7 @@ void checkOut(){
     printf("===== Check Out =====\n");
     printf("Ringkasan Pesanan:\n");
     printf("ID Sepatu: %d\n", data.sepatuId);
-    printf("Kategori: %s\n", data.kategori);
+    printf("Kategori: %d\n", data.kategori);
     printf("Jenis: %d\n", data.jenis);
     printf("Harga: %.2f\n", data.harga);
 
@@ -782,7 +801,7 @@ void checkOut(){
 
     printf("===== Bukti Transaksi =====\n");
     printf("ID Sepatu: %d\n", data.sepatuId);
-    printf("Kategori: %s\n", data.kategori);
+    printf("Kategori: %d\n", data.kategori);
     printf("Jenis: %d\n", data.jenis);
     printf("Harga: %.2f\n", data.harga);
     printf("Jumlah: %d\n", data.stok);
