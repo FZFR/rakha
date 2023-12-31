@@ -596,15 +596,9 @@ void searchShoes() {
     printf("===== Hasil Pencarian =====\n");
 
     while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
-        if (strcmp(field, "1") == 0 && data.kategori == keyword) {
-            printf("ID Sepatu: %d\n", data.sepatuId);
-            printf("Nama: %s\n", data.nama);
-            printf("Kategori: %d\n", data.kategori);
-            printf("Jenis: %d\n", data.jenis);
-            printf("Harga: %.2f\n", data.harga);
-            printf("Stok: %d\n", data.stok);
-            printf("\n");
-        } else if (strcmp(field, "2") == 0 && data.jenis == keyword) {
+        // Menampilkan sepatu berdasarkan kategori atau jenis
+        if ((strcmp(field, "1") == 0 && data.kategori == keyword) ||
+            (strcmp(field, "2") == 0 && data.jenis == keyword)) {
             printf("ID Sepatu: %d\n", data.sepatuId);
             printf("Nama: %s\n", data.nama);
             printf("Kategori: %d\n", data.kategori);
@@ -616,6 +610,27 @@ void searchShoes() {
     }
 
     fclose(f_daftarSepatu);
+
+    int choice;
+    printf("1. Kembali ke menu customer\n");
+    printf("2. Keluar\n");
+    printf("Masukkan pilihan Anda: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            // Kembali ke menu customer setelah menampilkan daftar sepatu
+            menuCustomer();
+            break;
+        case 2:
+            // Keluar dari program
+            outro();
+            break;
+        default:
+            printf("Pilihan tidak valid. Kembali ke menu customer.\n");
+            menuCustomer();
+            break;
+    }
 }
 
 void userReg() {
