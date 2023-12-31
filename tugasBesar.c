@@ -515,7 +515,7 @@ void userReg(){
     system("cls");
     printf("Berhasil Membuat Akun!!\n");
     printf("Tekan Enter untuk melanjutkan...\n");
-    fflush(stdin);
+    while (getchar() != '\n');  
     getchar();
 
     userLogin();
@@ -549,7 +549,7 @@ void userLogin(){
                 printf("Login berhasil!!\n");
                 success = 1;
                 printf("Tekan Enter untuk melanjutkan...\n");
-                fflush(stdin);
+                while (getchar() != '\n');  
                 getchar();
                 menuCustomer();
                 break;
@@ -562,7 +562,7 @@ void userLogin(){
             attempts--;
             printf("Username atau Password Salah, sisa kesempatan login: %d\n", attempts);
             printf("Tekan Enter untuk melanjutkan...\n");
-            fflush(stdin);
+            while (getchar() != '\n');  
             getchar();
         }
     }
@@ -570,7 +570,7 @@ void userLogin(){
     if (attempts == 0) {
         printf("Kesempatan login habis.\n");
         printf("Tekan Enter untuk melanjutkan...\n");
-        fflush(stdin);
+        while (getchar() != '\n');  
         getchar();
         main();
     }
