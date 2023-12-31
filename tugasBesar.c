@@ -312,9 +312,11 @@ void addStok() {
     while (getchar() != '\n');  // Clear input buffer
 
     if (data.kategori == 1) {
-        printf("Masukkan Jenis Sepatu (Sneaker Boots): ");
+        printf("Masukkan Jenis Sepatu (Sneaker/Boots): ");
+        fgets(data.jenis, sizeof(data.jenis), stdin);
     } else if (data.kategori == 2) {
         printf("Masukkan Jenis Sepatu (Flat Shoes/High Heel/Sandal): ");
+        fgets(data.jenis, sizeof(data.jenis), stdin);
     } else {
         printf("Kategori tidak valid.\n");
         fclose(f_daftarSepatu);
@@ -511,23 +513,21 @@ void user(){
     }
 }
 
-void viewShoes(){
+void viewShoes() {
     FILE *f_daftarSepatu;
     f_daftarSepatu = fopen("daftar_sepatu.dat", "rb");
 
-    if (f_daftarSepatu == NULL)
-    {
+    if (f_daftarSepatu == NULL) {
         printf("Error: Gagal membuka file daftar_sepatu.dat\n");
         return;
     }
 
     printf("===== Daftar Sepatu =====\n");
 
-    while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1)
-    {
+    while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
         printf("ID Sepatu: %d\n", data.sepatuId);
         printf("Nama: %s\n", data.nama);
-        printf("Kategori: %s\n", data.kategori);
+        printf("Kategori: %d\n", data.kategori);  // Use %d for integer
         printf("Jenis: %s\n", data.jenis);
         printf("Harga: %.2f\n", data.harga);
         printf("Stok: %d\n", data.stok);
@@ -535,9 +535,29 @@ void viewShoes(){
     }
 
     fclose(f_daftarSepatu);
-    printf("Tekan Enter untuk melanjutkan...\n");
-    while (getchar() != '\n');
-    adminOptions();
+
+    printf("Pilihan:\n");
+    printf("1. Kembali ke menu customer\n");
+    printf("2. Keluar\n");
+    printf("Masukkan pilihan Anda: ");
+
+    int choice;
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            // Kembali ke menu customer setelah menampilkan daftar sepatu
+            menuCustomer();
+            break;
+        case 2:
+            // Keluar dari program
+            outro();
+            break;
+        default:
+            printf("Pilihan tidak valid. Kembali ke menu customer.\n");
+            menuCustomer();
+            break;
+    }
 }
 
 void searchShoes(){
@@ -706,8 +726,7 @@ void menuCustomer(){
     printf("\nMasukkan Pilihan Anda : "); scanf( "%d", &pilihan);    
     
     switch(pilihan){
-        case 1:
-        system("cls");
+        case 1:        
         viewShoes();
         break;
         case 2:
