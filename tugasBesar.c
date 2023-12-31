@@ -179,9 +179,8 @@ void adminOptions(){
 }
 }
 
-void hapusAkun(){
+void hapusAkun() {
     FILE *f_daftarakun, *f_temp;
-   
 
     f_daftarakun = fopen("akuncus.dat", "rb");
     f_temp = fopen("temp.dat", "wb");
@@ -191,23 +190,73 @@ void hapusAkun(){
         return;
     }
 
+    printf("===== List Akun Customer =====\n");
+
+    // Display the list of customer usernames
+    while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
+        printf("%s\n", data.userNameCus);
+    }
+
+    fclose(f_daftarakun);
+
+    // Prompt for the username of the customer to be deleted
     printf("Masukkan username customer yang ingin dihapus: ");
-    getchar(); 
+    getchar();
     fgets(data.targetUsername, sizeof(data.targetUsername), stdin);
 
+    // Open the file again to check for the selected customer and ask for confirmation
+    f_daftarakun = fopen("akuncus.dat", "rb");
+
+    if (f_daftarakun == NULL) {
+        perror("Error Membuka File");
+        return;
+    }
+
+    int found = 0;
+
     while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
-        if (strcmp(data.userNameCus, data.targetUsername) != 0) {
-            fwrite(&data, sizeof(data), 1, f_temp);
+        if (strcmp(data.userNameCus, data.targetUsername) == 0) {
+            found = 1;
+            break;
         }
     }
 
     fclose(f_daftarakun);
-    fclose(f_temp);
 
-    remove("akuncus.dat");
-    rename("temp.dat", "akuncus.dat");
+    if (found) {
+        char confirmation;
+        printf("Apakah Anda yakin ingin menghapus akun customer dengan username %s? (Y/N): ", data.targetUsername);
+        scanf(" %c", &confirmation);
 
-    printf("Akun customer dengan username %s telah dihapus.\n", data.targetUsername);
+        if (confirmation == 'Y' || confirmation == 'y') {
+            // Reopen the file to perform deletion
+            f_daftarakun = fopen("akuncus.dat", "rb");
+
+            if (f_daftarakun == NULL) {
+                perror("Error Membuka File");
+                return;
+            }
+
+            while (fread(&data, sizeof(data), 1, f_daftarakun) == 1) {
+                if (strcmp(data.userNameCus, data.targetUsername) != 0) {
+                    fwrite(&data, sizeof(data), 1, f_temp);
+                }
+            }
+
+            fclose(f_daftarakun);
+            fclose(f_temp);
+
+            remove("akuncus.dat");
+            rename("temp.dat", "akuncus.dat");
+
+            printf("Akun customer dengan username %s telah dihapus.\n", data.targetUsername);
+        } else {
+            printf("Penghapusan dibatalkan.\n");
+        }
+    } else {
+        printf("Maaf, akun customer dengan username %s tidak ditemukan.\n", data.targetUsername);
+    }
+
     printf("Tekan Enter untuk melanjutkan...\n");
     while (getchar() != '\n');
     adminOptions();
@@ -751,5 +800,6 @@ void addFeedback(){
 
 
 void outro(){
-    printf("Terima kasih telah menggunakan aplikasi kami");    
+    printf("Terima kasih telah menggunakan aplikasi kami");  
+    return 0;  
 }
