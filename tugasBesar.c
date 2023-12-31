@@ -225,7 +225,7 @@ void hapusAkun() {
         scanf(" %c", &confirmation);
 
         if (confirmation == 'Y' || confirmation == 'y') {
-            // Reopen the file to perform deletion
+            
             f_daftarakun = fopen("akuncus.dat", "rb");
 
             if (f_daftarakun == NULL) {
@@ -301,11 +301,11 @@ void addStok() {
 
     printf("Masukkan ID Sepatu: ");
     scanf(" %d", &data.sepatuId);
-    while (getchar() != '\n');  // Clear input buffer
+    while (getchar() != '\n'); 
 
     printf("Masukkan Kategori (1 for Male, 2 for Female): ");
     scanf(" %d", &data.kategori);
-    while (getchar() != '\n');  // Clear input buffer
+    while (getchar() != '\n');  
 
     if (data.kategori == 1) {
         printf("Masukkan Jenis Sepatu (1 Sneaker, 2. Boots): ");
@@ -319,15 +319,15 @@ void addStok() {
         return;
     }
     
-    while (getchar() != '\n');  // Clear input buffer
+    while (getchar() != '\n');  
 
     printf("Masukkan Harga Sepatu: ");
     scanf("%f", &data.harga);
-    while (getchar() != '\n');  // Clear input buffer
+    while (getchar() != '\n');
 
     printf("Masukkan Stok Sepatu: ");
     scanf(" %d", &data.stok);
-    while (getchar() != '\n');  // Clear input buffer
+    while (getchar() != '\n'); 
 
     fwrite(&data, sizeof(data), 1, f_daftarSepatu);
     fclose(f_daftarSepatu);
@@ -524,7 +524,7 @@ void viewShoes() {
     while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
     printf("ID Sepatu: %d\n", data.sepatuId);
     printf("Nama: %s\n", data.nama);
-    printf("Kategori: %d\n", data.kategori);  // Use %d for integer
+    printf("Kategori: %d\n", data.kategori); 
     printf("Jenis: %d\n", data.jenis);
     printf("Harga: %.2f\n", data.harga);
     printf("Stok: %d\n", data.stok);
@@ -542,12 +542,10 @@ void viewShoes() {
     scanf("%d", &choice);
 
     switch (choice) {
-        case 1:
-            // Kembali ke menu customer setelah menampilkan daftar sepatu
+        case 1:        
             menuCustomer();
             break;
         case 2:
-            // Keluar dari program
             outro();
             break;
         default:
@@ -594,7 +592,6 @@ void searchShoes() {
     printf("===== Hasil Pencarian =====\n");
 
     while (fread(&data, sizeof(data), 1, f_daftarSepatu) == 1) {
-        // Menampilkan sepatu berdasarkan kategori atau jenis
         if ((strcmp(field, "1") == 0 && data.kategori == keyword) ||
             (strcmp(field, "2") == 0 && data.jenis == keyword)) {
             printf("ID Sepatu: %d\n", data.sepatuId);
@@ -617,11 +614,9 @@ void searchShoes() {
 
     switch (choice) {
         case 1:
-            // Kembali ke menu customer setelah menampilkan daftar sepatu
             menuCustomer();
             break;
         case 2:
-            // Keluar dari program
             outro();
             break;
         default:
@@ -643,20 +638,16 @@ void userReg() {
     } else {
         memset(&data, 0, sizeof(data));
 
-        // Input username
         printf("Username baru : ");
         scanf("%s", data.userNameCus);
 
-        // Input password
         printf("\nPassword baru : ");
         scanf("%s", data.passwordCus);
 
-        // Menampilkan data yang akan disimpan
         printf("\nData yang akan disimpan:\n");
         printf("Username: %s\n", data.userNameCus);
         printf("Password: %s\n", data.passwordCus);
 
-        // Opsi perbaiki data
         printf("\nApakah data sudah benar? (Y/N): ");
         char confirmation;
         scanf(" %c", &confirmation);
@@ -707,11 +698,11 @@ void userLogin() {
             return;
         }
 
-        // Use a separate structure to read data from the file
+        
         struct shoesandcare userData;
 
         while (fread(&userData, sizeof(userData), 1, f_daftarakun) == 1) {
-            // Check for a match using the entered username and password
+            
             if (strcmp(data.targetUsername, userData.userNameCus) == 0 &&
                 strcmp(data.targetPassword, userData.passwordCus) == 0) {
                 printf("Login berhasil!!\n");
